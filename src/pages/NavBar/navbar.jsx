@@ -23,7 +23,7 @@ const searchkey = useSelector((state)=>state.search.searchKey);
 
     useEffect(() => {
         if (!!authUser === false) {
-            // setLogged(false);
+            setLogged(false);
           // history.push('/');
         }
         else {
@@ -33,7 +33,7 @@ const searchkey = useSelector((state)=>state.search.searchKey);
 
 
     useEffect(() => {
-        if(searchkey !== 'all'){
+        if((searchkey !== 'all') && (searchkey !== 'remove_search_key')){
             setKey(searchkey)
         }
         else{
@@ -44,11 +44,9 @@ const searchkey = useSelector((state)=>state.search.searchKey);
 
     const signOut=()=>{
         signOutApp().then(() => {
-                        console.log('succes');
-
             history.push('/Login');
           }).catch((error) => {
-            console.log('okkkerror');
+            console.log('error');
           });
     }
     const search=(e)=>{

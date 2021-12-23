@@ -38,35 +38,36 @@ const Events = () =>{
     const [loader, setLoader] = useState(true);
     const [pagination,setPagination]=useState(true);
     const [eventMsg,setEventMsg]=useState('');
-
     const itemsPerPage = 3;
        useEffect( () => {
+          if(searchkey !== 'remove_search_key'){
          async function eventdata(){
-             try{
-                    let result=[];
-                    setFilterCategory('');
-                    if((searchkey === '') || (searchkey === 'all')){
+                 try{
+                        let result=[];
+                        setFilterCategory('');
+                        if((searchkey === '') || (searchkey === 'all')){
 
-                         result = await getFirstdata();
-                         setPagination(true); 
-                    }
-                    else{
-                         result = await getSearchCategory(searchkey);
-                                   setPagination(false); 
+                             result = await getFirstdata();
+                             setPagination(true); 
+                        }
+                        else{
+                             result = await getSearchCategory(searchkey);
+                                       setPagination(false); 
 
-                    }
-                    setFirebasedoc(result);
-                    const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
-                    setEvents(res);
-                    setLoader(false);
-                    SetError('');
-            }
-            catch{  
-                    setLoader(false);
-                    SetError('Please try after some time..');
-            }
-         }
-           eventdata();
+                        }
+                        setFirebasedoc(result);
+                        const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
+                        setEvents(res);
+                        setLoader(false);
+                        SetError('');
+                }
+                catch{  
+                        setLoader(false);
+                        SetError('Please try after some time..');
+                }
+             }
+               eventdata();
+           }
 
         }, [searchkey]);
 
@@ -79,12 +80,6 @@ const Events = () =>{
        
        },[searchkey]);
 
-    const toggleEvent = () =>{
-        setEventMsg('')
-        setCreateEvent(prevState =>({
-            value:!prevState.value
-        }));
-    }
     const listEvent = () =>{
         setEventMsg('')
         dispatch(eventSearchActions.searchKey('all'));
@@ -95,7 +90,7 @@ const Events = () =>{
     }
     const filterChange =(event) =>{
         setFilterCategory(event.target.value);
-        dispatch(eventSearchActions.searchKey(''));
+        dispatch(eventSearchActions.searchKey('remove_search_key'));
         setFirebasedoc('');
          getFilterCategory(event.target.value).then((result)=>{
                 const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
@@ -125,7 +120,7 @@ const Events = () =>{
                         setDescription('');
                         setCategory('');
                         setBanner('');
-                        // toggleEvent();
+                        setCreateEvent({value:false});
                     }
                     saveEventdata();
 
@@ -199,7 +194,7 @@ const Events = () =>{
         
             <h4 className="miniTitle text-center sectionTitle">
                 {/*{(authUser.user != undefined && authUser.user.user != null) && (createEvent.value == false) ? 'Events' : 'Create Event'}*/}
-                {(authUser !== undefined && authUser !== null) || (createEvent.value === false) ? 'Events' : 'Create Event'}
+                {(authUser === undefined && authUser === null) || (createEvent.value !== false) ? 'Create Events' : 'Event'}
             </h4>
            
             {/*{events.length === 0 && <div className="spinner text-center"><Spinner/></div>}*/}
