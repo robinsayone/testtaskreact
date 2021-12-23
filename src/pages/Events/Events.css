@@ -117,10 +117,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
 }
-.createbuttonclas{
-   position: absolute;
-   right: 0;
-}
+
 .search-form{
     display: flex;
     justify-content: right;
@@ -152,4 +149,16 @@
 }
 .services{
     position: relative;
+}
+@media only screen and (min-width: 600px) {
+.createbuttonclas{
+   position: absolute;
+   right: 0;
+   top: 30px;
+}
+}
+@media only screen and (max-width: 599px) {
+.createbuttonclas{
+   text-align: center;
+}
 }
