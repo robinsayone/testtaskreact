@@ -23,7 +23,7 @@ const searchkey = useSelector((state)=>state.search.searchKey);
 
     useEffect(() => {
         if (!!authUser === false) {
-            setLogged(false);
+            // setLogged(false);
           // history.push('/');
         }
         else {

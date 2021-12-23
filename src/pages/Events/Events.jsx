@@ -39,7 +39,6 @@ const Events = () =>{
     const [pagination,setPagination]=useState(true);
     const [eventMsg,setEventMsg]=useState('');
 
-console.log(searchkey);
     const itemsPerPage = 3;
        useEffect( () => {
          async function eventdata(){
