@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import './Login.css';
 import {UserContext} from '../../Provider/AuthProvider';
 import { FirebaseErrorHandler } from "../../Helpers/FirebaseErrorHandler";
+import Spinner from './../Spinner/Spinner';
 
 const Login = (props)=>{
 const authUser=useContext(UserContext);
@@ -17,6 +18,7 @@ const [email, setEmail] = useState({ value: "", error: "" });
 const [password, setPassword] = useState({ value: "", error: "" });
 const [conpassword, setConpassword] = useState({ value: "", error: "" });
 const [error, SetError] = useState('');
+const [loader, setLoader] = useState(false);
 
 const history = useHistory();
 
@@ -29,35 +31,46 @@ const authenticate = () =>{
 
 	   const emailError = ValidateEmail(email.value);
 	   const passwordError = passwordValidator(password.value);
+	   setLoader(true);
 	   if(emailError){
-	   	setEmail({...email,error:emailError});
+	   	setEmail({...email,error:emailError});	   
+	   	setLoader(false);
 	   }
 	   else if(passwordError){
-	   	setPassword({...password,error:passwordError});
+	   	setPassword({...password,error:passwordError});	   
+	   	setLoader(false);
 	   }
 	   else if (signUp === 'yes' && password.value !== conpassword.value) {
-	      setConpassword({ ...conpassword, error: 'Password and Repassword not match' });
+	      setConpassword({ ...conpassword, error: 'Password and Repassword not match' });	   
+	      setLoader(false);
 	    } 
 	   else if(signUp === 'yes'){
 		   signUpEmailPwd(email.value,password.value).then((userCredential) => {
  				      SetError("Success");
+  	      	   setLoader(false);
 			  })
 			  .catch((error) => {
 			    const errorCode = error.code;
 			    const result = FirebaseErrorHandler(errorCode);
 		        SetError(result);
+       	   setLoader(false);
+
 			  });
 	   }
 	   else{
 
 	      signInEmailPwd(email.value,password.value).then((userCredential) => {
 		      // const user = userCredential.user;
-		      SetError("Success");
+		      SetError("Success.Please SignIn to Site");
+      	   setLoader(false);
+
 		    })
 		    .catch((error) => {
 		      const errorCode = error.code;
 		      const result = FirebaseErrorHandler(errorCode);
 	         SetError(result);
+       	   setLoader(false);
+
 		    });
 	   }
 
@@ -65,7 +78,7 @@ const authenticate = () =>{
 }
 return (
 		<>	
-         <div className="fContainer">
+        <div className="fContainer">
    	         <div className="forms-container">
 		         <div className="signIn-singUp">
 					<form  className="sign-in-form">
@@ -106,19 +119,24 @@ return (
 						</div>
 
 						}
-						<div className="user__button fullwidth">
-							<Button variant="contained"
-								className="LoginButton"
-								buttontext={ signUp === 'no' ? "Sign In" : "Sign Up" } 
-								onClick={authenticate}/>
-						</div>
-						<div >
-						{ signUp === 'no' ?
-			              <p >New Member? <a  href="#" onClick={()=>{setSignup('yes');SetError('');}}>Sign up now.</a></p>
-			              :
-			              <p>Already a Member? <a href="#" onClick={()=>setSignup('no')}>Sign In now.</a></p>
-						}
-			            </div>
+						{ loader ? <div className="text-center"><Spinner/></div>
+							:
+						<>
+							<div className="user__button fullwidth">
+								<Button variant="contained"
+									className="LoginButton"
+									buttontext={ signUp === 'no' ? "Sign In" : "Sign Up" } 
+									onClick={authenticate}/>
+							</div>
+							<div >
+							{ signUp === 'no' ?
+				              <p >New Member? <a  href="#" onClick={()=>{setSignup('yes');SetError('');}}>Sign up now.</a></p>
+				              :
+				              <p>Already a Member? <a href="#" onClick={()=>setSignup('no')}>Sign In now.</a></p>
+							}
+				        </div>
+			         </>
+			         }
 			        </form>
 			        
 		        </div>

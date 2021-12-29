@@ -52,6 +52,12 @@ const searchkey = useSelector((state)=>state.search.searchKey);
     const search=(e)=>{
         e.preventDefault();
         dispatch(eventSearchActions.searchKey(key));
+        if(key !== ''){
+        history.push(`/search/${key}`);
+        }
+        else{
+            history.push('/');
+        }
     }
 
 

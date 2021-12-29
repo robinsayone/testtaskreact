@@ -14,7 +14,7 @@ import { writeEventData,imageupload,getFirstdata,getCountEvent,getNextdata,getPr
 import { getDownloadURL } from "firebase/storage";
 import {useSelector , useDispatch} from 'react-redux';
 import {eventSearchActions} from '../../store/Eventslice';
-
+import { useHistory,useParams  } from "react-router-dom";
 const Events = () =>{
     const [events,setEvents] = useState([]);
     const [createEvent,setCreateEvent] = useState({value:false});
@@ -39,21 +39,29 @@ const Events = () =>{
     const [pagination,setPagination]=useState(true);
     const [eventMsg,setEventMsg]=useState('');
     const itemsPerPage = 3;
+    let history = useHistory();
+    let { urlParms , value } = useParams();
+
+
+        if((urlParms != undefined) && (value === 'search')){
+           dispatch(eventSearchActions.searchKey(urlParms));
+          // result = await getSearchCategory(urlParms);
+        }
        useEffect( () => {
-          if(searchkey !== 'remove_search_key'){
+          if((searchkey !== 'remove_search_key') && (value !== 'filter')){
          async function eventdata(){
                  try{
+
                         let result=[];
                         setFilterCategory('');
-                        if((searchkey === '') || (searchkey === 'all')){
-
+                        if(((searchkey === '') || (searchkey === 'all')) && (value !== 'search')){
                              result = await getFirstdata();
                              setPagination(true); 
                         }
                         else{
+                           
                              result = await getSearchCategory(searchkey);
                                        setPagination(false); 
-
                         }
                         setFirebasedoc(result);
                         const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
@@ -69,7 +77,32 @@ const Events = () =>{
                eventdata();
            }
 
-        }, [searchkey]);
+        }, [searchkey,urlParms,value]);
+       useEffect( () => {
+
+          if(value === 'filter'){
+                 setFilterCategory(urlParms);
+         async function eventdata(){
+                 try{
+                        getFilterCategory(urlParms).then((result)=>{
+                            const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
+                            setEvents(res);
+                            SetError('');
+                            setPagination(false); 
+                            setLoader(false);
+                        }).catch((error)=>{
+                            SetError('Please try after some time..');
+                        });
+                }
+                catch{  
+                        setLoader(false);
+                        SetError('Please try after some time..');
+                }
+             }
+               eventdata();
+           }
+
+        }, [urlParms,value]);
 
     useEffect( ()=>{
         async function getcount(){
@@ -89,47 +122,51 @@ const Events = () =>{
         setCreateEvent({value:true});
     }
     const filterChange =(event) =>{
-        setFilterCategory(event.target.value);
+            history.push(`/filter/${event.target.value}`);
+            setFilterCategory(event.target.value);
         dispatch(eventSearchActions.searchKey('remove_search_key'));
-        setFirebasedoc('');
-         getFilterCategory(event.target.value).then((result)=>{
-                const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
-                setEvents(res);
-                SetError('');
-                setPagination(false); 
-            }).catch((error)=>{
-                SetError('Please try after some time..');
-            });
+        // setFirebasedoc('');
+        //  getFilterCategory(event.target.value).then((result)=>{
+        //         const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
+        //         setEvents(res);
+        //         SetError('');
+        //         setPagination(false); 
+        //     }).catch((error)=>{
+        //         SetError('Please try after some time..');
+        //     });
     }
     const saveEvent = ()=>{
-        if(!name || !price || !description || !category || !banner){
-            SetError('Please fill all fields.');
-        }else{
-            SetError('');
-            setLoader(true);
-            imageupload(authUser.uid,banner).then((snapshot)=>{
-                getDownloadURL(snapshot.ref).then((downloadURL) => {
-                    // console.log('File available at', downloadURL);
-                    // const bannerPath = snapshot.metadata.fullPath;
-                    async function saveEventdata(){
-                        const result = await writeEventData(authUser.uid,downloadURL,name,price,description,category);
-                        setEventMsg(result);
-                        setLoader(false);
-                        setName('');
-                        setTicketprice('');
-                        setDescription('');
-                        setCategory('');
-                        setBanner('');
-                        setCreateEvent({value:false});
-                    }
-                    saveEventdata();
+        if(error == ''){
+            if(!name || !price || !description || !category || !banner){
+                SetError('Please fill all fields.');
+            }else{
+                SetError('');
+                setLoader(true);
+                imageupload(authUser.uid,banner).then((snapshot)=>{
+                    getDownloadURL(snapshot.ref).then((downloadURL) => {
+                        // console.log('File available at', downloadURL);
+                        // const bannerPath = snapshot.metadata.fullPath;
+                        async function saveEventdata(){
+                            await writeEventData(authUser.uid,downloadURL,name,price,description,category);
+                            setEventMsg('Event Created Successfully.');
+                            setLoader(false);
+                            setName('');
+                            setTicketprice('');
+                            setDescription('');
+                            setCategory('');
+                            setBanner('');
+                            // setCreateEvent({value:false});
+                        }
+                        saveEventdata();
 
 
+                    });
+                }).catch((error) => {
+                  SetError('Error.Please try after some time...');
                 });
-            }).catch((error) => {
-              SetError('Error.Please try after some time...');
-            });
+            }
         }
+        
     }
       const Next = (event) => {
         getNextdata(firebasedoc).then((result)=>{
@@ -184,8 +221,22 @@ const Events = () =>{
     const clearFilter = () =>{
             setFilterCategory('');
             dispatch(eventSearchActions.searchKey('all'));
+            history.push(`/`);
     }
+    const eventBanner = (event) =>{
+        const url = event.target.files[0].name;
+        const ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+        if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "webp") 
+         {
+            setBanner(event.target.files[0]);
+            SetError('');
 
+        }
+         else{
+              setBanner('');
+              SetError('Error.Banner should be gif|png|jpeg|jpg');
+         }
+    }
 
       
 
@@ -298,7 +349,8 @@ const Events = () =>{
                                 variant="standard"
                                 required
                                 filename={banner}
-                                onChange={(event)=>setBanner(event.target.files[0])}/>
+                                onChange={eventBanner}
+                                />
                     </div>
                     <div className=" createEvent-form">
                     <TextInput  placeholder="Description" 

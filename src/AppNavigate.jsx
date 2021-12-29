@@ -11,6 +11,9 @@ return(
           <Route exact path="/">
             <Home />
           </Route>
+           <Route exact path="/:value/:urlParms">
+            <Home />
+          </Route>
           <Route path="/Login">
             <Login />
           </Route>
