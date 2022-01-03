@@ -43,7 +43,7 @@ const Events = () =>{
     let { urlParms , value } = useParams();
 
 
-        if((urlParms != undefined) && (value === 'search')){
+        if((urlParms !== undefined) && (value === 'search')){
            dispatch(eventSearchActions.searchKey(urlParms));
           // result = await getSearchCategory(urlParms);
         }
@@ -125,6 +125,7 @@ const Events = () =>{
             history.push(`/filter/${event.target.value}`);
             setFilterCategory(event.target.value);
         dispatch(eventSearchActions.searchKey('remove_search_key'));
+            setCurentPage(1);
         // setFirebasedoc('');
         //  getFilterCategory(event.target.value).then((result)=>{
         //         const res = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
@@ -136,7 +137,7 @@ const Events = () =>{
         //     });
     }
     const saveEvent = ()=>{
-        if(error == ''){
+        if(error === ''){
             if(!name || !price || !description || !category || !banner){
                 SetError('Please fill all fields.');
             }else{
@@ -207,9 +208,7 @@ const Events = () =>{
                 // }else{
                 //     setDisPrev(true);
                 // }
-
                 setCurentPage(+curentPage - 1);
-                setDisNext(false);
                 if(curentPage === 2){
                 setDisPrev(true);
                 }
@@ -220,13 +219,15 @@ const Events = () =>{
       };
     const clearFilter = () =>{
             setFilterCategory('');
+            setDisPrev(true);
+            setDisNext(false);
             dispatch(eventSearchActions.searchKey('all'));
             history.push(`/`);
     }
     const eventBanner = (event) =>{
         const url = event.target.files[0].name;
         const ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
-        if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "webp") 
+        if (ext === "gif" || ext === "png" || ext === "jpeg" || ext === "jpg" || ext === "webp") 
          {
             setBanner(event.target.files[0]);
             SetError('');
