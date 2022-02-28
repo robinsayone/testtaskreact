@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`login page matches snapshot 1`] = `
+<React.Fragment>
+  <div
+    className="fContainer"
+  >
+    <div
+      className="forms-container"
+    >
+      <div
+        className="signIn-singUp"
+      >
+        <form
+          className="sign-in-form"
+        >
+          <h2
+            className="title"
+          >
+            Sign in
+          </h2>
+          <div
+            className="user__email fullwidth"
+          >
+            <TextInput
+              error={false}
+              errorText=""
+              label="Email"
+              onChange={[Function]}
+              value=""
+              variant="filled"
+            />
+          </div>
+          <div
+            className="user__password fullwidth"
+          >
+            <TextInput
+              error={false}
+              errorText=""
+              label="Password"
+              onChange={[Function]}
+              type="password"
+              value=""
+              variant="filled"
+            />
+          </div>
+          <React.Fragment>
+            <div
+              className="user__button fullwidth"
+            >
+              <UiButton
+                buttontext="Sign In"
+                className="LoginButton"
+                onClick={[Function]}
+                variant="contained"
+              />
+            </div>
+            <div>
+              <p>
+                New Member? 
+                <a
+                  href="#"
+                  onClick={[Function]}
+                >
+                  Sign up now.
+                </a>
+              </p>
+            </div>
+          </React.Fragment>
+        </form>
+      </div>
+      <div
+        className="panels-container"
+      >
+        <div
+          className="panel left-panel"
+        >
+          <div
+            className="content"
+          >
+            <h3>
+              Home ?
+            </h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi beatae quas magnam!
+            </p>
+            <Link
+              as={
+                Object {
+                  "$$typeof": Symbol(react.forward_ref),
+                  "propTypes": Object {
+                    "innerRef": [Function],
+                    "onClick": [Function],
+                    "replace": [Function],
+                    "target": [Function],
+                    "to": [Function],
+                  },
+                  "render": [Function],
+                }
+              }
+              to="/"
+            >
+              <button
+                className="iBtn transparent"
+              >
+                Home
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</React.Fragment>
+`;

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 const UiButton =({buttontext,...props})=>(
     <>
-    <Button  {...props} >{buttontext}</Button>
+    <Button data-testid="uiButton" {...props} >{buttontext}</Button>
     </>
   );
 export default UiButton;

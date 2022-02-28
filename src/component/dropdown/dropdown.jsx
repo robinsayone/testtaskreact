@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function BasicSelect({label,value="20",onChange,size="default"}) {
+export default function BasicSelect({label,value="Health",onChange,size="default"}) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -13,6 +13,7 @@ export default function BasicSelect({label,value="20",onChange,size="default"}) 
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
+          data-testid="dropdowntestId"
           value={value}
           onChange={onChange}
           size={size}
