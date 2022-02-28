@@ -14,8 +14,6 @@ import { UserContext } from "../../Provider/AuthProvider";
 
 
 const Update = () => {
-   // const [events,setEvents] = useState([]);
-    //const [createEvent,setCreateEvent] = useState({value:false});
 
     const [name,setName]=useState('');
     const [price,setTicketprice]=useState('');
@@ -26,8 +24,6 @@ const Update = () => {
     const [successMsg, setSuccessMsg] = useState('');
     const [logged,setLogged]=useState(false);   
    
-    //const [loader, setLoader] = useState(true);
-    //const [pagination,setPagination]=useState(true);
     const [eventMsg,setEventMsg]=useState('');
     let { id } = useParams(); 
     let history = useHistory(); 
@@ -103,22 +99,6 @@ const Update = () => {
         
          
 
-        
-        
-        // const updateDoc = async(userId,bannerPath,name,price,description,category) => {
-        //   const eventRef = doc(db, "events", "id") 
-        //   try{
-        //     await updateDoc(eventRef, {
-              
-        
-        //   })
-        // }  catch (e) {
-        //   return 'error';
-        //   console.error("Error updating document: ", e);
-        // }
-        // }
-        
-
       }; 
 
 
@@ -139,14 +119,7 @@ const Update = () => {
 
 
     <form  className="createEvent-form">
-                {/* {error  !== '' && 
-                            <div className="alert alert-danger" role="alert">
-                              {error}
-                            </div>
-                } */}
-                {/* { eventMsg !=='' &&
-                    <div className="alert alert-info" role="alert">{eventMsg}</div>
-                } */}
+                
                     <div className=" createEvent-form">
                      <TextInput  label="Name" 
                                 value={name}
@@ -203,20 +176,9 @@ const Update = () => {
                                 />
 
 
-
                     </div>
 
-                    {/* <div className=" createEvent-form">
-                        {loader ?
-                            <div className="text-center"><Spinner/></div>
-                            : 
-                            <Button variant="contained"
-                                className="LoginButton"
-                                buttontext="Create"
-                                //onClick={saveEvent}
-                                />
-                        }
-                    </div> */}
+                  
                 </form>
                 
                 {successMsg? <ModalComponent Msg ='Successfully Updated'/> : error}

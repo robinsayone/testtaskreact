@@ -20,9 +20,7 @@ const handleShow = () => setShow(true);
           <p> {Msg}</p> 
         </Modal.Body>
         <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleClose}>
-            Close Modal
-          </Button> */}
+         
         </Modal.Footer>
       </Modal> 
   )

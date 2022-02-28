@@ -14,7 +14,7 @@ import { writeEventData,imageupload,getFirstdata,getCountEvent,getNextdata,getPr
 import { getDownloadURL } from "firebase/storage";
 import {useSelector , useDispatch} from 'react-redux';
 import {eventSearchActions} from '../../store/Eventslice';
-import { useHistory,useParams  } from "react-router-dom";
+import {useHistory,useParams  } from "react-router-dom";
 const Events = () =>{
     const [events,setEvents] = useState([]);
     const [createEvent,setCreateEvent] = useState({value:false});
@@ -24,7 +24,7 @@ const Events = () =>{
     const [description,setDescription]=useState('');
     const [category,setCategory]=useState('');
     const [banner,setBanner]=useState('');
-    const [error, SetError] = useState('');
+    const [error, SetError] = useState(''); 
     const [firebasedoc, setFirebasedoc] = useState('');
     const [curentPage, setCurentPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);

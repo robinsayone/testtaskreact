@@ -10,8 +10,6 @@ import Header from '../header/header';
 
 const View = () => {
    
-    //const[res, setRes] = useState('test');
-    // const[event, setEvent] = useState('');
     const[error, setError] = useState("no");
     const[name,setName]= useState('');
     const [price,setTicketprice]=useState('');
@@ -20,10 +18,6 @@ const View = () => {
     const [banner,setBanner]=useState('');
     const [loader, setLoader] = useState(true);
     const [logged,setLogged]=useState(false);  
-    
-    // const[result, setResult] = useState('');
-
-    // const {name, category, description, bannerPath ,price} = event; 
 
     let { id } = useParams();
     let history = useHistory();  
@@ -34,15 +28,7 @@ const View = () => {
       
       const event = await getSingleEvent(id);
       console.log(event); 
-    //   if(event.exists){
-    //     setEvent(event.data())
-    //     console.log(event);
-        
-    //   } 
-    //    else{
-    //     console.log("no doc")
-    
-    
+   
       
       return event;
     }; 
@@ -77,35 +63,8 @@ const View = () => {
         }
 
       setLoader(false); 
-    //    if(Array.isArray(result)){
-    //     if(result.length!==0){
-    //         setEvent(result);
-    //         console.log(event);
-    //     }
-    //     else{
-    //         setError("No event")
-
-    //     }
-    // } 
-    // else {
-    //     setError("No event")
-    // }
        
-       //    const resVal = result.docs.map((value) =>  [{id: value.id,...value.data()}][0]);
-    //    console.log(resVal);
-       
-    }, [id]) 
-    
-    // useEffect(()=>{
-        
-    // })
-
-    // useEffect(()=>{
-    //     getEventData();
-
-    // }, [id]); 
-
-    
+    }, [id])  
     
   return ( 
     <>  
@@ -115,8 +74,7 @@ const View = () => {
     
 
         <h2 className="Productdetails"> View Product Details  </h2>
-
-       
+  
         {
                                error=='no'  ?  loader ?  
                                <>
@@ -150,25 +108,19 @@ const View = () => {
         
         </Link> 
         
-        
- 
+
            }
            
-                               
+     
                                </>
 
-       
-           
-                           
-                                   
+
                                     : 
                                      
                                     <ModalComponent Msg="The event doesnot exist"/> 
                                     
                             }
                     
-                
-           
            
     </div>
 
