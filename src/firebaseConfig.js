@@ -11,9 +11,9 @@ import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword,sign
 import { ref as storageRef , uploadBytesResumable } from "firebase/storage";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore"; 
-import { collection, query, orderBy, startAfter, limit, addDoc,getDocs,limitToLast,setDoc,startAt ,doc,endBefore,where,endAt  } from "firebase/firestore";  
 
-
+import { collection, query, orderBy, startAfter, limit, addDoc,getDocs,limitToLast,setDoc,startAt ,doc,endBefore,where,endAt, updateDoc} from "firebase/firestore";  
+import { getDoc } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyBbil2ybdX8vAFNU5KAxVCy27V2rpxHYUI",
   authDomain: "testtask-2397c.firebaseapp.com",
@@ -28,7 +28,7 @@ const firebaseConfig = {
  initializeApp(firebaseConfig);
 const auth = getAuth();
 const storage = getStorage();
-const db = getFirestore();
+export const db = getFirestore();
 
 export const signUpEmailPwd=(email,password)=>{
  return createUserWithEmailAndPassword(auth,email, password);
@@ -70,11 +70,52 @@ export async function writeEventData(userId,bannerPath,name,price,description,ca
     }
 }
 
-// export const getEventdata = async () =>{
-//   const querySnapshot = await getDocs(collection(db, "events"));
-//   return querySnapshot;  
 
-// }
+export const getSingleEvent = async(id) => {
+  try {
+     
+   
+const docRef = doc(db, "events", id);
+const docSnap = await getDoc(docRef);
+ 
+  if (docSnap.exists()) {
+    return docSnap.data();
+    console.log("Document data:", docSnap.data());
+    } else {
+    // doc.data() will be undefined in this case
+    return {"error":"error"} ;
+    }
+     
+  }
+  
+  catch (error) {
+    return {"error":"error"}; 
+  }
+} 
+
+
+export const getEventData = async () =>{
+  const querySnapshot = await getDocs(collection(db, "events"));
+  return querySnapshot;  
+}
+
+export const updateEvent = async(id, bannerPath,name,price,description,category) => {
+  const eventRef = doc(db, "events", id) 
+  try{
+    await updateDoc(eventRef, {
+    
+    bannerPath,
+    name,
+    price,
+    description,
+    category,
+    
+  })
+}  catch (e) {
+  return 'error';
+  console.error("Error adding document: ", e);
+}
+}
 
 export const getFirstdata = async () =>{
   // const querySnapshot = await getDocs(collection(db, "events"));
@@ -85,7 +126,6 @@ export const getFirstdata = async () =>{
   return documentSnapshots;
 
 }
-
 export const getFilterCategory = async (category) =>{
   const first = query(collection(db, "events"),
     where("category", "==", category),
@@ -131,6 +171,5 @@ export const getCountEvent = async () =>{
         count=res[0]['count'];
       }
             return count;
-
 }
 
