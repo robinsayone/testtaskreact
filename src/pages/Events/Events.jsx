@@ -15,6 +15,8 @@ import { getDownloadURL } from "firebase/storage";
 import {useSelector , useDispatch} from 'react-redux';
 import {eventSearchActions} from '../../store/Eventslice';
 import {useHistory,useParams  } from "react-router-dom";
+
+
 const Events = () =>{
     const [events,setEvents] = useState([]);
     const [createEvent,setCreateEvent] = useState({value:false});
@@ -42,6 +44,9 @@ const Events = () =>{
     let history = useHistory();
     let { urlParms , value } = useParams();
 
+   
+
+     
 
         if((urlParms !== undefined) && (value === 'search')){
            dispatch(eventSearchActions.searchKey(urlParms));
@@ -327,10 +332,11 @@ const Events = () =>{
                     <div className=" createEvent-form">
                      <TextInput  label="Name" 
                                 value={name}
-                                required
                                 onChange={(event)=>setName(event.target.value)}
                                 variant="standard"/>
+                                
                     </div>
+                  
                     <div className=" createEvent-form">
                     <TextInput  label="Price in INR" 
                                 value={price}
@@ -338,6 +344,7 @@ const Events = () =>{
                                 required
                                 onChange={(event)=>setTicketprice(event.target.value)}
                                 variant="standard"/>
+                                
                     </div>
                     <div className=" createEvent-form noMarginTop">
 
@@ -363,6 +370,7 @@ const Events = () =>{
                                 required
                                 onChange={(event)=>setDescription(event.target.value)}
                                   />
+                               
                     </div>
                     <div className=" createEvent-form">
                     <BasicSelect  label="Category *" 
@@ -378,7 +386,9 @@ const Events = () =>{
                             <Button variant="contained"
                                 className="LoginButton"
                                 buttontext="Create"
-                                onClick={saveEvent}/>
+                                onClick={saveEvent}
+                                // onClick={handleSubmit(saveEvent)}
+                                />
                         }
                     </div>
                 </form>
